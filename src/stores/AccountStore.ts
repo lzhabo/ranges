@@ -1,4 +1,4 @@
-import { makeAutoObservable, reaction } from "mobx";
+import { makeAutoObservable } from "mobx";
 import type { Config } from "wagmi";
 import RootStore from "./RootStore";
 

@@ -30,7 +30,7 @@ export default function App() {
   return (
     <WagmiProvider config={wagmiConfig}>
       <storesContext.Provider value={mobxStore}>
-        <_SyncDataFromHook_ />
+        <SyncDataFromHook />
         <AppRoutes />
       </storesContext.Provider>
     </WagmiProvider>
@@ -38,7 +38,7 @@ export default function App() {
 }
 
 // Separate component to handle account sync inside WagmiProvider
-const _SyncDataFromHook_ = observer(() => {
+const SyncDataFromHook = observer(() => {
   const { address, isConnected } = useAccount();
   const chainId = useChainId();
   const config = useConfig();
@@ -49,7 +49,7 @@ const _SyncDataFromHook_ = observer(() => {
     accountStore.setIsConnected(isConnected);
     accountStore.setChainId(chainId);
     accountStore.setWagmiConfig(config);
-  }, [address, isConnected, chainId]);
+  }, [address, isConnected, chainId, accountStore, config]);
 
   return null;
 });
