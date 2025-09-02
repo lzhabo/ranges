@@ -1,28 +1,23 @@
 import { createAppKit } from "@reown/appkit/react";
 
-import {
-  sepolia,
-  mainnet,
-  polygon,
-  bsc,
-  arbitrum,
-  base,
-} from "@reown/appkit/networks";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
+import {
+  sepolia
+} from "@reown/appkit/networks";
 
 // 1. Get projectId from https://dashboard.reown.com
-const projectId = "36bebdc48976ed77532a5c54a88ef585";
+const projectId = "546a21374c699f782f21670a1405a02a";
 
 // 2. Create a metadata object - optional
 const metadata = {
-  name: "ZExpire",
-  description: "ZExpire Presale Platform",
-  url: "https://zexpire.com", // origin must match your domain & subdomain
+  name: "Ranges Finance",
+  description: "Ranges finance",
+  url: "https://ranges.finance", // origin must match your domain & subdomain
   icons: ["https://avatars.githubusercontent.com/u/179229932"],
 };
 
 // 3. Set the networks
-const networks = [sepolia, mainnet, polygon, bsc, arbitrum, base] as any;
+const networks = [sepolia] as any;
 
 // 4. Create Wagmi Adapter
 const wagmiAdapter = new WagmiAdapter({

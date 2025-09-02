@@ -1,26 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import styled from "@emotion/styled";
+import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
+import { useAccount, useChainId, useConfig, WagmiProvider } from "wagmi";
+import RootStore from "./stores/RootStore";
+import wagmiConfig from "./configs/wagmiConfig";
+import { storesContext, useStores } from "./stores/useStores";
+import Swap from "./pages/Swap";
 
-function App() {
+const Wrapper = styled.div`
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+`;
+
+function AppRoutes() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Wrapper>
+      <Swap />
+    </Wrapper>
+  );
+}
+const mobxStore = new RootStore();
+
+export default function App() {
+  return (
+    <WagmiProvider config={wagmiConfig}>
+      <storesContext.Provider value={mobxStore}>
+        <_SyncDataFromHook_ />
+        <AppRoutes />
+      </storesContext.Provider>
+    </WagmiProvider>
   );
 }
 
-export default App;
+// Separate component to handle account sync inside WagmiProvider
+const _SyncDataFromHook_ = observer(() => {
+  const { address, isConnected } = useAccount();
+  const chainId = useChainId();
+  const config = useConfig();
+  const { accountStore } = useStores();
+
+  useEffect(() => {
+    accountStore.setAddress(address);
+    accountStore.setIsConnected(isConnected);
+    accountStore.setChainId(chainId);
+    accountStore.setWagmiConfig(config);
+  }, [address, isConnected, chainId]);
+
+  return null;
+});
