@@ -1,5 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import AccountStore, { type IAccountStoreInitState } from "./AccountStore";
+import BalanceStore from "./BalanceStore";
+import SwapStore from "./SwapStore";
 
 export interface ISerializedRootStore {
   accountStore?: IAccountStoreInitState;
@@ -7,9 +9,13 @@ export interface ISerializedRootStore {
 
 export default class RootStore {
   accountStore: AccountStore;
-  
+  balanceStore: BalanceStore;
+  swapStore: SwapStore;
+
   constructor(initialState?: ISerializedRootStore) {
-    this.accountStore = new AccountStore(this, initialState?.accountStore);
+    this.accountStore = new AccountStore(this);
+    this.balanceStore = new BalanceStore(this)
+    this.swapStore = new SwapStore(this);
     makeAutoObservable(this);
 
   }
